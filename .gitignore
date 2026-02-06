@@ -1,0 +1,23 @@
+# Virtual environment
+venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Data (raw Kaggle files)
+data/raw/
+
+# Outputs
+outputs/
+models/
+
+# VS Code
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
