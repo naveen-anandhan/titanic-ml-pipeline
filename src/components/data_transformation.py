@@ -67,8 +67,24 @@ class DataTransformation:
 
 
     def get_preprocessor(self):
-        num_cols = ['Age','Fare','Family_Size','Ticket_Frequency','SibSp','Parch']
-        cat_cols = ['Sex','Embarked','Pclass','Title']
+        num_cols = [
+            'Age',
+            'Fare',
+            'Family_Size',
+            'SibSp',
+            'Parch'
+        ]
+
+        cat_cols = [
+            'Sex',
+            'Embarked',
+            'Pclass',
+            'Title',
+            'Deck',
+            'Ticket_Group'
+        ]
+
+
 
         num_pipe = Pipeline([
             ('impute', SimpleImputer(strategy='median')),
