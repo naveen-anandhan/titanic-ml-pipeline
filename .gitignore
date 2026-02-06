@@ -17,6 +17,7 @@ models/
 
 # VS Code
 .vscode/
+*.csv
 
 # OS files
 .DS_Store
