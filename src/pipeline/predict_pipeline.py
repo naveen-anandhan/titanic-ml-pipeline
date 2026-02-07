@@ -1,13 +1,15 @@
 import pandas as pd
 import pickle
 from src.components.data_transformation import DataTransformation
+import os
 
 
 class PredictPipeline:
 
-    def predict(self):
+    def predict(self, model, test_df):
         # load test data
-        test_df = pd.read_csv("data/raw/test.csv")
+        test_path  = os.path.join("data", "raw", "titanic", "test.csv")
+        test_df = pd.read_csv(test_path)
 
         passenger_ids = test_df["PassengerId"]
 

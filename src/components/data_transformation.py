@@ -4,7 +4,7 @@ from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.impute import SimpleImputer
 
 class DataTransformation:
-    def create_features(df):
+    def create_features(self, df):
         rare_titles = [
             'Dr', 'Rev', 'Col', 'Major', 'Don', 'Lady', 'Sir',
             'Capt', 'the Countess', 'Jonkheer', 'Dona']
