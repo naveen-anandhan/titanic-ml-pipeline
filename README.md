@@ -2,11 +2,11 @@
 ## 📁 Project Structure
 
 ```
-client → FastAPI → load model.pkl → predict → response
-                    ↓
-                  logs
-                    ↓
-               error handling
+client → FastAPI (cloud server) → load model from S3 → predict → response
+                                        ↓
+                                      logs
+                                        ↓
+                                   error handling
 
 ```
 
@@ -51,5 +51,6 @@ titanic-ml-pipeline/
 ├── requirements.txt
 └── README.md
 ```
+
 
 
