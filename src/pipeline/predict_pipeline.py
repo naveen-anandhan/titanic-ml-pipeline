@@ -2,30 +2,41 @@ import pandas as pd
 import pickle
 from src.components.data_transformation import DataTransformation
 import os
+import sys
 
+from src.logger import logger
+from src.exception import CustomException
 
 class PredictPipeline:
 
     def predict(self, model, test_df):
-        # load test data
-        test_path  = os.path.join("data", "raw", "titanic", "test.csv")
-        test_df = pd.read_csv(test_path)
+        try:
+            logger.info("Prediction pipeline started")
 
-        passenger_ids = test_df["PassengerId"]
+            # load test data
+            test_path = os.path.join("data", "raw", "titanic", "test.csv")
+            test_df = pd.read_csv(test_path)
 
-        transformer = DataTransformation()
-        test_df = transformer.create_features(test_df)
+            passenger_ids = test_df["PassengerId"]
 
-        with open("models/model_pipeline.pkl", "rb") as f:
-            model = pickle.load(f)
+            transformer = DataTransformation()
+            test_df = transformer.create_features(test_df)
 
-        preds = model.predict(test_df)
+            with open("models/model_pipeline.pkl", "rb") as f:
+                model = pickle.load(f)
 
-        submission = pd.DataFrame({
-            "PassengerId": passenger_ids,
-            "Survived": preds.astype(int)
-        })
+            preds = model.predict(test_df)
 
-        submission.to_csv("outputs/submission.csv", index=False)
+            submission = pd.DataFrame({
+                "PassengerId": passenger_ids,
+                "Survived": preds.astype(int)
+            })
 
-        print("✅ Submission file created at outputs/submission.csv")
+            submission.to_csv("outputs/submission.csv", index=False)
+
+            logger.info("Prediction pipeline completed")
+            print("✅ Submission file created at outputs/submission.csv")
+
+        except Exception as e:
+            logger.error("Error in prediction pipeline")
+            raise CustomException(e, sys)
