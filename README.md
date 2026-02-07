@@ -4,29 +4,42 @@
 ```
 titanic-ml-pipeline/
 │
-├── notebooks/
-│   └── 01_eda.ipynb          # Exploratory Data Analysis
-│
 ├── data/
-│   ├── raw/                 # Original dataset
-│   └── processed/           # Cleaned dataset
+│   ├── raw/
+│   │   └── titanic/
+│   │       ├── train.csv
+│   │       └── test.csv
+│   │
+│   └── processed/
+│       └── .gitkeep
+│
+├── models/
+│   ├── model_pipeline.pkl
+│   └── .gitkeep
+│
+├── outputs/
+│   ├── submission.csv
+│   └── .gitkeep
+│
+├── notebooks/
 │
 ├── src/
-│   ├── logger.py            # Logging execution details
-│   ├── exception.py         # Custom exception handling
-│   ├── utils.py             # Helper utilities
-│
-│   ├── components/          # Core ML components
+│   ├── components/
 │   │   ├── data_ingestion.py
 │   │   ├── data_transformation.py
 │   │   └── model_trainer.py
+│   │
+│   ├── pipeline/
+│   │   ├── train_pipeline.py
+│   │   └── predict_pipeline.py
+│   │
+│   ├── logger.py
+│   ├── exception.py
+│   └── utils.py
 │
-│   └── pipeline/            # Training & prediction pipelines
-│       ├── train_pipeline.py
-│       └── predict_pipeline.py
-│
-├── models/                  # Saved trained models
-├── outputs/                 # Plots and metrics
+├── venv/                # ignored in git
+├── main.py              # entry point
 ├── requirements.txt
-└── main.py                  # Entry point to run the pipeline
+└── README.md
 ```
+
