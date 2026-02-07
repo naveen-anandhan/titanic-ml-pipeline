@@ -8,18 +8,14 @@ __pycache__/
 # Jupyter
 .ipynb_checkpoints/
 
-# Data (raw Kaggle files)
-data/raw/
-
 # Outputs
 outputs/
 models/
+logs/
 
 # VS Code
 .vscode/
-*.csv
 
 # OS files
 .DS_Store
 Thumbs.db
-logs/
