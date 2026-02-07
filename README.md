@@ -2,6 +2,15 @@
 ## 📁 Project Structure
 
 ```
+client → FastAPI → load model.pkl → predict → response
+                    ↓
+                  logs
+                    ↓
+               error handling
+
+```
+
+```
 titanic-ml-pipeline/
 │
 ├── data/
@@ -42,4 +51,5 @@ titanic-ml-pipeline/
 ├── requirements.txt
 └── README.md
 ```
+
 
