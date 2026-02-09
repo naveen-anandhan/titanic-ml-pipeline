@@ -21,6 +21,31 @@ Given passenger details, predict the survival outcome.
 
 ---
 
+## 🚀 Live Deployment
+
+This model is deployed as a FastAPI service using Docker and Render.
+
+- **API Base URL**: https://titanic-api-8g3f.onrender.com  
+- **Swagger UI**: https://titanic-api-8g3f.onrender.com/docs
+
+You can test predictions directly from the browser.
+```json
+{
+  "PassengerId": 892,
+  "Pclass": 3,
+  "Name": "Kelly, Mr. James",
+  "Sex": "male",
+  "Age": 34.5,
+  "SibSp": 0,
+  "Parch": 0,
+  "Ticket": "330911",
+  "Fare": 7.8292,
+  "Cabin": null,
+  "Embarked": "Q"
+}
+```
+
+
 ## ⚙️ Tech Stack
 
 - Python  
@@ -42,8 +67,8 @@ No model training.
 Just run.
 
 ```bash
-docker pull naveen8680docker/titanic-api
-docker run -p 8000:8000 naveen8680docker/titanic-api
+docker pull naveen8680docker/titanic-api:latest
+docker run -p 8000:8000 naveen8680docker/titanic-api:latest
 ````
 
 Open Swagger UI in Browser:
@@ -86,7 +111,7 @@ python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 
-uvicorn api.app:app --reload
+uvicorn app:app --reload
 ```
 
 ---
@@ -144,5 +169,6 @@ The application is packaged as a Docker image and can be deployed to any cloud p
 ## 👤 Author
 
 # **Naveen**
+
 
 
