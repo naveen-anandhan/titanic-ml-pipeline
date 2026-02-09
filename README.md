@@ -143,4 +143,8 @@ The application is packaged as a Docker image and can be deployed to any cloud p
 
 ## 👤 Author
 
+<<<<<<< HEAD
 # **Naveen**
+=======
+# **Naveen**
+>>>>>>> c9bce5d (Docker updated)
