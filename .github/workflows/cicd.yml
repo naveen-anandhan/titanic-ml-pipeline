@@ -4,7 +4,6 @@ on:
   release:
     types: [published]
 
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -28,22 +27,21 @@ jobs:
       - name: Run tests
         run: PYTHONPATH=. pytest
 
-
       - name: Login to GHCR
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
       - name: Build image
         run: |
-          docker build -t ghcr.io/${{ github.repository }}:latest \
-                       -t ghcr.io/${{ github.repository }}:${{ github.ref_name }} .
+          docker build \
+            --build-arg APP_VERSION=${{ github.event.release.tag_name }} \
+            -t ghcr.io/${{ github.repository }}:${{ github.event.release.tag_name }} \
+            -t ghcr.io/${{ github.repository }}:latest \
+            .
 
       - name: Push image
         run: |
           docker push ghcr.io/${{ github.repository }}:latest
-          docker push ghcr.io/${{ github.repository }}:${{ github.ref_name }}
+          docker push ghcr.io/${{ github.repository }}:${{ github.event.release.tag_name }}
 
       - name: Trigger Render Deploy
         run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
-        env:
-          RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
-          APP_VERSION: ${{ github.event.release.tag_name }}
