@@ -3,6 +3,7 @@ import pandas as pd
 import pickle
 import sys
 import io
+import os
 
 from src.components.data_transformation import DataTransformation
 from src.logger import logger
@@ -19,6 +20,12 @@ try:
 except Exception as e:
     logger.error("Error loading model")
     raise CustomException(e, sys)
+
+APP_VERSION = os.getenv("APP_VERSION", "dev")
+
+@app.get("/version")
+def version():
+    return {"version": APP_VERSION}
 
 
 @app.get("/")
