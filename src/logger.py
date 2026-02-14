@@ -1,21 +1,24 @@
+# src/logger.py
 import logging
 import os
-from datetime import datetime
 
-# logs directory
-LOG_DIR = os.path.join(os.getcwd(), "logs")
-os.makedirs(LOG_DIR, exist_ok=True)
+LOG_LEVEL = logging.INFO
 
-# daily log file
-LOG_FILE = f"{datetime.now().strftime('%m_%d_%Y')}.log"
-LOG_FILE_PATH = os.path.join(LOG_DIR, LOG_FILE)
+logger = logging.getLogger()
+logger.setLevel(LOG_LEVEL)
 
-# logging configuration
-logging.basicConfig(
-    filename=LOG_FILE_PATH,
-    format="[ %(asctime)s ] %(filename)s:%(lineno)d %(levelname)s - %(message)s",
-    level=logging.INFO,
+formatter = logging.Formatter(
+    "%(asctime)s | %(levelname)s | %(name)s | %(message)s"
 )
 
-# expose logger object
-logger = logging.getLogger(__name__)
+# ---- Console handler (ALWAYS) ----
+console_handler = logging.StreamHandler()
+console_handler.setFormatter(formatter)
+logger.addHandler(console_handler)
+
+# ---- File handler (ONLY LOCAL) ----
+if os.getenv("ENV", "local") == "local":
+    os.makedirs("logs", exist_ok=True)
+    file_handler = logging.FileHandler("logs/app.log")
+    file_handler.setFormatter(formatter)
+    logger.addHandler(file_handler)
