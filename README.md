@@ -1,4 +1,3 @@
-
 # 🚢 Titanic Survival Prediction API
 
 End-to-end Machine Learning system that predicts whether a passenger survived the Titanic disaster.
@@ -9,42 +8,34 @@ This project demonstrates:
 ✅ feature engineering  
 ✅ model training  
 ✅ pipeline serialization  
-✅ REST API development with FastAPI  
+✅ REST API with FastAPI  
 ✅ Docker containerization  
-✅ production-style deployment mindset  
+✅ CI/CD automation  
+✅ registry-based deployments  
 
 ---
 
 ## 🧠 Problem Statement
 
-Given passenger details, predict the survival outcome.
+Given passenger attributes, predict survival outcome.
 
 ---
 
 ## 🚀 Live Deployment
 
-This model is deployed as a FastAPI service using Docker and Render.
+The service is containerized and automatically deployed.
 
-- **API Base URL**: https://titanic-api-8g3f.onrender.com  
-- **Swagger UI**: https://titanic-api-8g3f.onrender.com/docs
-
-You can test predictions directly from the browser.
-```json
-{
-  "PassengerId": 892,
-  "Pclass": 3,
-  "Name": "Kelly, Mr. James",
-  "Sex": "male",
-  "Age": 34.5,
-  "SibSp": 0,
-  "Parch": 0,
-  "Ticket": "330911",
-  "Fare": 7.8292,
-  "Cabin": null,
-  "Embarked": "Q"
-}
+**API Base URL**
+```
+https://titanic-api-8g3f.onrender.com
 ```
 
+**Swagger UI**
+```
+https://titanic-api-8g3f.onrender.com/docs
+```
+
+---
 
 ## ⚙️ Tech Stack
 
@@ -53,26 +44,43 @@ You can test predictions directly from the browser.
 - scikit-learn  
 - FastAPI  
 - Uvicorn  
-- Docker
-- Cloud
+- Docker  
+- GitHub Actions  
+- GitHub Container Registry (GHCR)  
+- Cloud deployment  
 
 ---
 
-## 🚀 Run Using Docker (Recommended)
+## 🔁 CI/CD Pipeline
 
-No virtual environment.  
-No dependency installation.  
-No model training.
+Every push to `main` triggers:
 
-Just run.
+```
+push → install deps → run tests → build image → push to GHCR → trigger Render deploy
+```
+
+No manual steps.
+
+---
+
+## 📦 Container Registry
+
+Images are stored in:
+
+```
+ghcr.io/naveen-anandhan/titanic-ml-pipeline:latest
+```
+
+---
+
+## 🚀 Run Using Docker
 
 ```bash
-docker pull naveen8680docker/titanic-api:latest
-docker run -p 8000:8000 naveen8680docker/titanic-api:latest
-````
+docker pull ghcr.io/naveen-anandhan/titanic-ml-pipeline:latest
+docker run -p 8000:8000 ghcr.io/naveen-anandhan/titanic-ml-pipeline:latest
+```
 
-Open Swagger UI in Browser:
-
+Open in browser:
 ```
 http://localhost:8000/docs
 ```
@@ -101,7 +109,7 @@ http://localhost:8000/docs
 
 ---
 
-## 🧑‍💻 Run Locally (Development Mode)
+## 🧑‍💻 Run Locally (Dev Mode)
 
 ```bash
 git clone https://github.com/naveen-anandhan/titanic-ml-pipeline.git
@@ -113,6 +121,18 @@ pip install -r requirements.txt
 
 uvicorn app:app --reload
 ```
+
+---
+
+## 🧪 Testing
+
+CI validates the API before building images.
+
+```bash
+PYTHONPATH=. pytest
+```
+
+If tests fail → deployment stops.
 
 ---
 
@@ -133,39 +153,60 @@ client → FastAPI → load trained model → predict → response
 ```
 titanic-ml-pipeline/
 │
+├── .github/
+│   └── workflows/
+│       └── cicd.yml
+│
 ├── data/
-│   ├── raw/titanic/
-│   └── processed/
+│   ├── processed/
+│   └── raw/
+│
+├── logs/
 │
 ├── models/
-│   └── model_pipeline.pkl
-│
-├── outputs/
+│   ├── model_pipeline.pkl
+│   └── .gitkeep
 │
 ├── notebooks/
+│   ├── 01.ipynb
+│   └── titanic.ipynb
+│
+├── outputs/
+│   ├── submission.csv
+│   └── .gitkeep
 │
 ├── src/
 │   ├── components/
+│   │   ├── data_ingestion.py
+│   │   ├── data_transformation.py
+│   │   └── model_trainer.py
+│   │
 │   ├── pipeline/
+│   │   ├── predict_pipeline.py
+│   │   └── train_pipeline.py
+│   │
 │   ├── logger.py
 │   ├── exception.py
 │   └── utils.py
 │
+├── tests/
+│   └── test_app.py
+│
+├── app.py
 ├── main.py
+├── Dockerfile
 ├── requirements.txt
 └── README.md
 ```
 
 ---
 
-## 🌍 Deployment Ready
+## 🌍 Deployment Philosophy
 
-The application is packaged as a Docker image and can be deployed to any cloud platform.
-
-**Build once → run anywhere.**
+**Build once → store in registry → deploy anywhere.**
 
 ---
 
 ## 👤 Author
 
-# **Naveen**
+**Naveen**
