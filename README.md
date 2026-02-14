@@ -25,15 +25,13 @@ Given passenger attributes, predict survival outcome.
 
 The service is containerized and automatically deployed.
 
-**API Base URL**
-```
+**API Base URL** : 
 https://titanic-api-8g3f.onrender.com
-```
 
-**Swagger UI**
-```
+
+**Swagger UI** : 
 https://titanic-api-8g3f.onrender.com/docs
-```
+
 
 ---
 
@@ -210,3 +208,4 @@ titanic-ml-pipeline/
 ## 👤 Author
 
 **Naveen**
+
