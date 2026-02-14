@@ -12,25 +12,40 @@ from fastapi.responses import StreamingResponse
 
 app = FastAPI()
 
+
+# ---- read version from file ----
+def get_version():
+    try:
+        with open("VERSION", "r") as f:
+            return f.read().strip()
+    except:
+        return "dev"
+
+
+# ---- load model ----
 try:
     with open("models/model_pipeline.pkl", "rb") as f:
         model = pickle.load(f)
+
     transformer = DataTransformation()
+
     logger.info("Model and transformer loaded successfully")
+    logger.info(f"VERSION FILE VALUE = {get_version()}")
+
 except Exception as e:
-    logger.error("Error loading model")
+    logger.exception("Error loading model")
     raise CustomException(e, sys)
-
-APP_VERSION = os.getenv("APP_VERSION", "dev")
-
-@app.get("/version")
-def version():
-    return {"version": APP_VERSION}
 
 
 @app.get("/")
 def home():
     return {"message": "Titanic API running"}
+
+
+# ---- version endpoint ----
+@app.get("/version")
+def version():
+    return {"version": get_version()}
 
 
 @app.post("/predict")
@@ -48,7 +63,7 @@ def predict(data: dict):
         return {"prediction": int(pred)}
 
     except Exception as e:
-        logger.error("Error during prediction")
+        logger.exception("Error during prediction")
         raise CustomException(e, sys)
 
 
@@ -77,5 +92,5 @@ def predict_file(file: UploadFile = File(...)):
         )
 
     except Exception as e:
-        logger.error("Error in batch prediction")
+        logger.exception("Error in batch prediction")
         raise CustomException(e, sys)

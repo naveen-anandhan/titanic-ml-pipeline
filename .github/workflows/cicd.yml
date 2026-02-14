@@ -30,6 +30,9 @@ jobs:
       - name: Login to GHCR
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
+      - name: Create VERSION file
+        run: echo "${{ github.event.release.tag_name }}" > VERSION
+
       - name: Build image
         run: |
           docker build \
