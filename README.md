@@ -23,15 +23,13 @@ Given passenger attributes, predict survival outcome.
 
 ## 🚀 Live Deployment
 
-The service is containerized and automatically deployed.
+The service is containerized and deployed via release-based CI/CD.
 
-**API Base URL** : 
+**API Base URL**  
 https://titanic-api-8g3f.onrender.com
 
-
-**Swagger UI** : 
+**Swagger UI**  
 https://titanic-api-8g3f.onrender.com/docs
-
 
 ---
 
@@ -45,19 +43,58 @@ https://titanic-api-8g3f.onrender.com/docs
 - Docker  
 - GitHub Actions  
 - GitHub Container Registry (GHCR)  
-- Cloud deployment  
+- Render (Cloud)
+
+---
+
+## 🔒 Release & Deployment Rule (Very Important)
+
+This repository follows **release-driven deployment**.
+
+```
+Push / Merge  → NO DEPLOY ❌  
+Create Release → BUILD → DEPLOY 🚀
+```
+
+### Workflow
+
+1. Developers can push or merge changes into `main`.
+2. Production is **not** updated automatically.
+3. When changes are verified → we create a **GitHub Release**.
+4. Release triggers CI/CD.
+5. Docker image is built with the release version.
+6. Image is pushed to GHCR.
+7. Render pulls the new image and deploys.
+
+---
+
+### Why this approach?
+
+✅ prevents accidental deployments  
+✅ every production version is traceable  
+✅ easy rollback  
+✅ reproducible builds  
+✅ mirrors real industry systems  
+
+---
+
+### Reminder for future me 🧠
+
+👉 Want new code in production?  
+➡ create a **new release**.
 
 ---
 
 ## 🔁 CI/CD Pipeline
 
-Every push to `main` triggers:
+On release publish:
 
 ```
-push → install deps → run tests → build image → push to GHCR → trigger Render deploy
+release → install deps → run tests → create VERSION file → 
+build image → push to GHCR → trigger Render deploy
 ```
 
-No manual steps.
+If tests fail → deployment stops.
 
 ---
 
@@ -66,6 +103,7 @@ No manual steps.
 Images are stored in:
 
 ```
+ghcr.io/naveen-anandhan/titanic-ml-pipeline:<version>
 ghcr.io/naveen-anandhan/titanic-ml-pipeline:latest
 ```
 
@@ -124,13 +162,24 @@ uvicorn app:app --reload
 
 ## 🧪 Testing
 
-CI validates the API before building images.
-
 ```bash
 PYTHONPATH=. pytest
 ```
 
-If tests fail → deployment stops.
+If tests fail → CI blocks image build.
+
+---
+
+## 🧾 Versioning
+
+The application reads its version from a file generated during CI.
+
+Endpoint:
+```
+GET /version
+```
+
+This guarantees we always know **exactly** which release is running.
 
 ---
 
@@ -166,23 +215,12 @@ titanic-ml-pipeline/
 │   └── .gitkeep
 │
 ├── notebooks/
-│   ├── 01.ipynb
-│   └── titanic.ipynb
 │
 ├── outputs/
-│   ├── submission.csv
-│   └── .gitkeep
 │
 ├── src/
 │   ├── components/
-│   │   ├── data_ingestion.py
-│   │   ├── data_transformation.py
-│   │   └── model_trainer.py
-│   │
 │   ├── pipeline/
-│   │   ├── predict_pipeline.py
-│   │   └── train_pipeline.py
-│   │
 │   ├── logger.py
 │   ├── exception.py
 │   └── utils.py
@@ -208,4 +246,3 @@ titanic-ml-pipeline/
 ## 👤 Author
 
 **Naveen**
-
