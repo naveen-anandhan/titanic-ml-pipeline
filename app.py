@@ -1,4 +1,4 @@
-from fastapi import FastAPI, UploadFile, File
+from fastapi import FastAPI, UploadFile, File, APIRouter
 import pandas as pd
 import pickle
 import sys
@@ -11,6 +11,20 @@ from src.exception import CustomException
 from fastapi.responses import StreamingResponse
 
 app = FastAPI()
+
+from src.llm_service import explain_error
+import traceback
+
+router = APIRouter()
+
+@router.get("/test-llm-error")
+def test_llm_error():
+    try:
+        1 / 0  # force error
+    except Exception:
+        error_text = traceback.format_exc()
+        explanation = explain_error(error_text)
+        return {"llm_response": explanation}
 
 
 # ---- read version from file ----
