@@ -10,14 +10,13 @@ from src.logger import logger
 from src.exception import CustomException
 from fastapi.responses import StreamingResponse
 
-app = FastAPI()
-
 from src.llm_service import explain_error
 import traceback
 
-router = APIRouter()
 
-@router.get("/test-llm-error")
+app = FastAPI()
+
+@app.get("/test-llm-error")
 def test_llm_error():
     try:
         1 / 0  # force error
@@ -25,7 +24,6 @@ def test_llm_error():
         error_text = traceback.format_exc()
         explanation = explain_error(error_text)
         return {"llm_response": explanation}
-
 
 # ---- read version from file ----
 def get_version():
