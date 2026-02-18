@@ -1,53 +1,32 @@
-import os
-import requests
-import logging
+from gradio_client import Client
+import traceback
 
-HF_TOKEN = os.getenv("HF_TOKEN")
+class LLMService:
+    def __init__(self):
+        try:
+            self.client = Client("Naveen-anandhan/titanic-error-llm")
+            print("✅ Connected to HF Space successfully")
+        except Exception as e:
+            print("❌ Failed to initialize LLM client")
+            print(str(e))
+            self.client = None
 
-MODEL_URL = "https://api-inference.huggingface.co/models/microsoft/Phi-3-mini-4k-instruct"
+    def explain_error(self, error_text):
+        if not self.client:
+            return "LLM client not initialized."
 
-headers = {
-    "Authorization": f"Bearer {HF_TOKEN}",
-    "Content-Type": "application/json"
-}
+        try:
+            result = self.client.predict(
+                error_text=error_text,
+                api_name="/explain_error"
+            )
 
-logger = logging.getLogger(__name__)
+            print("✅ LLM response received")
+            return result
 
+        except Exception as e:
+            print("❌ Error while calling LLM:")
+            print(str(e))
+            traceback.print_exc()
 
-def explain_error(error_text: str) -> str:
-    """
-    Sends error traceback to HuggingFace model
-    and returns explanation text.
-    """
-
-    prompt = f"""
-You are a senior Python ML engineer.
-Explain the following error clearly and suggest a fix.
-
-Error:
-{error_text}
-"""
-
-    payload = {
-        "inputs": prompt,
-        "parameters": {
-            "max_new_tokens": 300,
-            "temperature": 0.3,
-        }
-    }
-
-    try:
-        response = requests.post(MODEL_URL, headers=headers, json=payload, timeout=60)
-        response.raise_for_status()
-
-        result = response.json()
-
-        # HF returns list format
-        if isinstance(result, list) and "generated_text" in result[0]:
-            return result[0]["generated_text"]
-
-        return str(result)
-
-    except Exception as e:
-        logger.error(f"LLM call failed: {e}")
-        return "LLM explanation failed."
+            return "LLM service temporarily unavailable."
