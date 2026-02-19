@@ -1,129 +1,168 @@
 # 🚢 Titanic Survival Prediction API
 
-End-to-end Machine Learning system that predicts whether a passenger survived the Titanic disaster.
+An end-to-end Production-Ready Machine Learning System that predicts whether a passenger survived the Titanic disaster.
 
-This project demonstrates:
+This project demonstrates a real-world ML deployment pipeline including model training, API serving, containerization, release-based CI/CD, cloud deployment, and LLM-assisted error analysis.
 
-✅ data ingestion  
-✅ feature engineering  
-✅ model training  
-✅ pipeline serialization  
-✅ REST API with FastAPI  
-✅ Docker containerization  
-✅ CI/CD automation  
-✅ registry-based deployments  
+---
+
+## ✨ What This Project Demonstrates
+
+* ✅ Data ingestion & preprocessing
+* ✅ Feature engineering pipeline
+* ✅ Model training & serialization
+* ✅ Production inference pipeline
+* ✅ FastAPI REST API
+* ✅ Structured logging & custom exception handling
+* ✅ 🤖 LLM-powered error analysis & fix suggestion
+* ✅ Docker containerization
+* ✅ Release-driven CI/CD automation
+* ✅ GitHub Container Registry (GHCR)
+* ✅ Cloud deployment on Render
+* ✅ Version traceability
 
 ---
 
 ## 🧠 Problem Statement
 
-Given passenger attributes, predict survival outcome.
+Given passenger attributes such as class, age, gender, fare, and embarkation port, predict whether the passenger survived the Titanic disaster.
 
 ---
 
-## 🚀 Live Deployment
+# 🚀 Live Deployment
 
-The service is containerized and deployed via release-based CI/CD.
+The service is deployed via **release-based CI/CD** using Docker images stored in GHCR.
 
-**API Base URL**  
+### 🔗 API Base URL
 https://titanic-api-8g3f.onrender.com
 
-**Swagger UI**  
+### 📘 Swagger UI
+
 https://titanic-api-8g3f.onrender.com/docs
 
----
 
-## ⚙️ Tech Stack
+### 🧾 Version Endpoint
 
-- Python  
-- pandas  
-- scikit-learn  
-- FastAPI  
-- Uvicorn  
-- Docker  
-- GitHub Actions  
-- GitHub Container Registry (GHCR)  
-- Render (Cloud)
+```
+GET /version
+```
+
+This ensures full traceability of the running production version.
 
 ---
 
-## 🔒 Release & Deployment Rule (Very Important)
+# ⚙️ Tech Stack
 
-This repository follows **release-driven deployment**.
+* Python
+* pandas
+* scikit-learn
+* FastAPI
+* Uvicorn
+* Docker
+* GitHub Actions
+* GitHub Container Registry (GHCR)
+* Render (Cloud Hosting)
+
+---
+
+# 🔒 Release & Deployment Strategy (Important)
+
+This project follows a **Release-Driven Deployment Model**.
 
 ```
 Push / Merge  → NO DEPLOY ❌  
 Create Release → BUILD → DEPLOY 🚀
 ```
 
-### Workflow
+## 🛠 Deployment Workflow
 
-1. Developers can push or merge changes into `main`.
-2. Production is **not** updated automatically.
-3. When changes are verified → we create a **GitHub Release**.
+1. Developers push or merge changes into `main`.
+2. Production is NOT updated automatically.
+3. When verified → a GitHub Release is created.
 4. Release triggers CI/CD.
-5. Docker image is built with the release version.
-6. Image is pushed to GHCR.
-7. Render pulls the new image and deploys.
+5. Tests are executed.
+6. Docker image is built using release version.
+7. Image is pushed to GHCR.
+8. Render pulls the new image and deploys.
 
 ---
 
-### Why this approach?
+## 🧠 Why This Approach?
 
-✅ prevents accidental deployments  
-✅ every production version is traceable  
-✅ easy rollback  
-✅ reproducible builds  
-✅ mirrors real industry systems  
-
----
-
-### Reminder for future me 🧠
-
-👉 Want new code in production?  
-➡ create a **new release**.
+* ✅ Prevents accidental production deployments.
+* ✅ Every production version is traceable.
+* ✅ Enables easy rollback.
+* ✅ Guarantees reproducible builds.
+* ✅ Follows real-world MLOps standards.
 
 ---
 
-## 🔁 CI/CD Pipeline
+# 🔁 CI/CD Pipeline
 
-On release publish:
+Triggered on **Release Publish**:
 
 ```
-release → install deps → run tests → create VERSION file → 
-build image → push to GHCR → trigger Render deploy
+release 
+   → install dependencies 
+   → run tests 
+   → generate VERSION file 
+   → build Docker image 
+   → push to GHCR 
+   → trigger Render deploy
 ```
 
-If tests fail → deployment stops.
+If tests fail → deployment is blocked automatically.
 
 ---
 
-## 📦 Container Registry
+# 📦 Container Registry
 
-Images are stored in:
+Images are stored at:
 
 ```
 ghcr.io/naveen-anandhan/titanic-ml-pipeline:<version>
 ghcr.io/naveen-anandhan/titanic-ml-pipeline:latest
 ```
 
+Each release creates an immutable, versioned container image.
+
 ---
 
-## 🚀 Run Using Docker
+# 🏷 Versioning Policy
+
+This project follows **Semantic Versioning (SemVer)**:
+
+```
+MAJOR.MINOR.PATCH
+```
+
+Example:
+
+* `v1.2.0` → New feature
+* `v1.2.1` → Bug fix
+* `v2.0.0` → Breaking change
+
+⚠️ Released versions are immutable.
+Bug fixes require a new patch version.
+
+---
+
+# 🐳 Run Using Docker
 
 ```bash
 docker pull ghcr.io/naveen-anandhan/titanic-ml-pipeline:latest
 docker run -p 8000:8000 ghcr.io/naveen-anandhan/titanic-ml-pipeline:latest
 ```
 
-Open in browser:
+Access locally:
+
 ```
 http://localhost:8000/docs
 ```
 
 ---
 
-## 🧪 Example Prediction Request
+# 🧪 Example Prediction Request
 
 **POST** `/predict`
 
@@ -145,7 +184,7 @@ http://localhost:8000/docs
 
 ---
 
-## 🧑‍💻 Run Locally (Dev Mode)
+# 🧑‍💻 Run Locally (Development Mode)
 
 ```bash
 git clone https://github.com/naveen-anandhan/titanic-ml-pipeline.git
@@ -160,7 +199,7 @@ uvicorn app:app --reload
 
 ---
 
-## 🧪 Testing
+# 🧪 Run Tests
 
 ```bash
 PYTHONPATH=. pytest
@@ -170,32 +209,31 @@ If tests fail → CI blocks image build.
 
 ---
 
-## 🧾 Versioning
+# 🏗️ System Architecture
 
-The application reads its version from a file generated during CI.
-
-Endpoint:
 ```
-GET /version
+Client / User
+      │
+      ▼
+FastAPI Application
+      │
+      ├── SUCCESS FLOW
+      │      → Load Serialized ML Pipeline
+      │      → Generate Prediction
+      │      → Return API Response
+      │
+      └── ERROR FLOW
+             → Exception Raised
+             → Exception Captured (Custom Handler)
+             → Structured Logging
+             → Send Error Context to LLM Service
+             → LLM Generates Suggested Fix
+             → Suggested Fix Logged
 ```
-
-This guarantees we always know **exactly** which release is running.
 
 ---
 
-## 🏗️ System Architecture
-
-```
-client → FastAPI → load trained model → predict → response
-                          ↓
-                         logs
-                          ↓
-                    error handling
-```
-
----
-
-## 📁 Project Structure
+# 📁 Project Structure
 
 ```
 titanic-ml-pipeline/
@@ -215,7 +253,6 @@ titanic-ml-pipeline/
 │   └── .gitkeep
 │
 ├── notebooks/
-│
 ├── outputs/
 │
 ├── src/
@@ -237,12 +274,16 @@ titanic-ml-pipeline/
 
 ---
 
-## 🌍 Deployment Philosophy
+# 🌍 Deployment Philosophy
 
-**Build once → store in registry → deploy anywhere.**
+> **Build once → Store in registry → Deploy anywhere**
+
+Each production version corresponds to an immutable Docker image.
 
 ---
 
-## 👤 Author
+# 👤 Author
 
 **Naveen**
+
+---
