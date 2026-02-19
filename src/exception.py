@@ -27,7 +27,9 @@ def async_llm_analysis(error_text: str):
         explanation = llm.explain_error(error_text)
 
         logging.info("🤖 LLM Suggested Fix:")
+        logging.info("=" * 60)
         logging.info(explanation)
+        logging.info("=" * 60)
 
     except Exception as e:
         logging.error("LLM analysis failed")
