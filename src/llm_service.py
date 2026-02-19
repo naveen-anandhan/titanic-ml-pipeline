@@ -20,13 +20,16 @@ class LLMService:
                 error_text=error_text,
                 api_name="/explain_error"
             )
-
-            print("✅ LLM response received")
             return result
 
         except Exception as e:
-            print("❌ Error while calling LLM:")
-            print(str(e))
             traceback.print_exc()
-
             return "LLM service temporarily unavailable."
+
+
+# 🔥 create single instance
+llm_service = LLMService()
+
+# # 🔥 expose function for FastAPI
+# def explain_error(error_text):
+#     return llm_service.explain_error(error_text)

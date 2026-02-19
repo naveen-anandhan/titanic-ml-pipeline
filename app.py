@@ -8,11 +8,10 @@ import os
 from src.components.data_transformation import DataTransformation
 from src.logger import logger
 from src.exception import CustomException
+from src.llm_service import llm_service
 from fastapi.responses import StreamingResponse
 
-from src.llm_service import explain_error
 import traceback
-
 
 app = FastAPI()
 
@@ -22,7 +21,7 @@ def test_llm_error():
         1 / 0  # force error
     except Exception:
         error_text = traceback.format_exc()
-        explanation = explain_error(error_text)
+        explanation = llm_service.explain_error(error_text)
         return {"llm_response": explanation}
 
 # ---- read version from file ----
